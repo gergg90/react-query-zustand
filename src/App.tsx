@@ -3,9 +3,8 @@ import { useFetchRepositories } from "./hooks/useRepos";
 import { useFavoriteRepositoriesStore } from "./store/favoriteRepos";
 
 function App() {
-  const { data, isLoading } = useFetchRepositories();
-  const { addFavoriteRepos, favoriteReposIds, removeFavoriteRepos } =
-    useFavoriteRepositoriesStore();
+  const { data, isLoading } = useFetchRepositories("midudev");
+  const { favoriteReposIds } = useFavoriteRepositoriesStore();
 
   if (isLoading) return <div>Loading</div>;
 
@@ -14,7 +13,6 @@ function App() {
       {data?.map((repos) => (
         <Card
           key={repos.id}
-          idRepository={repos.id}
           repository={repos}
           isFavorite={favoriteReposIds.includes(repos.id)}
         />

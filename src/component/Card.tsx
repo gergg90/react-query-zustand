@@ -4,22 +4,25 @@ import { useFavoriteRepositoriesStore } from "../store/favoriteRepos";
 type CardProps = {
   repository: Repository;
   isFavorite: boolean;
-  idRepository: number;
 };
 
-function Card({ repository, isFavorite, idRepository }: CardProps) {
+function Card({ repository, isFavorite }: CardProps) {
   const { removeFavoriteRepos, addFavoriteRepos } =
     useFavoriteRepositoriesStore();
 
   const handleLike = () => {
-    if (isFavorite) removeFavoriteRepos(idRepository);
-    if (!isFavorite) addFavoriteRepos(idRepository);
+    if (isFavorite) removeFavoriteRepos(repository.id);
+    if (!isFavorite) addFavoriteRepos(repository.id);
+  };
+
+  const buttonStyle = {
+    backgroundColor: isFavorite ? "#FF0000" : "#0000FF",
   };
 
   return (
     <div>
       <h3>{repository.name}</h3>
-      <button onClick={handleLike}>
+      <button style={buttonStyle} onClick={handleLike}>
         {isFavorite ? <>Dislike</> : <>Like </>}
       </button>
     </div>

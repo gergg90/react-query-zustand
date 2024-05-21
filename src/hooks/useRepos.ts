@@ -1,15 +1,19 @@
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { apiGithub } from "../api/github";
 import { Repository } from "./types";
 
-const fetchRepos = async () => {
-  const { data } = await apiGithub.get<Repository[]>("/users/gergg90/repos");
+const fetchRepos = async (ctx: QueryFunctionContext) => {
+  const [_, gitHubUser] = ctx.queryKey;
+
+  const { data } = await apiGithub.get<Repository[]>(
+    `/users/${gitHubUser}/repos`
+  );
   return data;
 };
 
-export const useFetchRepositories = () => {
+export const useFetchRepositories = (gitHubUser: string) => {
   return useQuery({
-    queryKey: ["repos"],
+    queryKey: ["repos", gitHubUser],
     queryFn: fetchRepos,
   });
 };
